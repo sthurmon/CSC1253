@@ -1,0 +1,14 @@
+start: myCallNum=0 nums[0..5]=[-1, 0, 15, 2, -3, 14]
+start: myCallNum=1 nums[0..2]=[-1, 0, 15]
+start: myCallNum=2 nums[0..1]=[-1, 0]
+  end: myCallNum=2 (callsGenerated=0), recDepth=2, maxItemIndex=1, numComparisons=1
+start: myCallNum=3 nums[2..2]=[15]
+  end: myCallNum=3 (callsGenerated=0), recDepth=2, maxItemIndex=2, numComparisons=0
+  end: myCallNum=1 (callsGenerated=2), recDepth=1, maxItemIndex=2, numComparisons=2
+start: myCallNum=4 nums[3..5]=[2, -3, 14]
+start: myCallNum=5 nums[3..4]=[2, -3]
+  end: myCallNum=5 (callsGenerated=0), recDepth=2, maxItemIndex=3, numComparisons=1
+start: myCallNum=6 nums[5..5]=[14]
+  end: myCallNum=6 (callsGenerated=0), recDepth=2, maxItemIndex=5, numComparisons=0
+  end: myCallNum=4 (callsGenerated=2), recDepth=1, maxItemIndex=5, numComparisons=2
+  end: myCallNum=0 (callsGenerated=6), recDepth=0, maxItemIndex=2, numComparisons=5

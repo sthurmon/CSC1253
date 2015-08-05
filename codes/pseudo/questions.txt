@@ -1,0 +1,13 @@
+> What is input?
+> What is output?
+> What are the types of the input and output?
+> For data where there are many things, am I doing
+  processing on that data?
+> If I have a loop, how do I start, stop and step?
+> Are there any checks done?
+> How many types of checks are to be performed, and what
+  is to be done when the checks are true? What about
+  false?
+> How could the algorithm, as-is, fail?
+> Are there any variables I introduced that need to
+  be declared?

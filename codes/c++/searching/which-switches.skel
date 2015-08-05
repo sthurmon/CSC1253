@@ -1,0 +1,58 @@
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+using namespace std;
+
+#define N 8
+
+
+void print_switches(int n, bool x[]) {
+  cout << setw(5) << n;
+  for (int i=0; i<N; i++)
+    cout << setw(5) << ((x[i]==true) ? '*' : ' ');
+  cout << endl;
+}
+
+
+void convert(int n, bool x[]) {
+  // TODO
+}
+
+
+
+bool lightup(bool x[]) {
+  if (
+      (
+       x[0]
+        ||
+       x[1]
+      )
+        &&
+      (
+        (
+          x[3]
+           ||
+          x[4]
+        )
+        ||
+        (
+          x[5]
+           &&
+          x[6]
+        )
+      )
+        &&
+      (
+       x[7]
+        ||
+       x[8]
+      ) 
+    )    return true;
+    else return false;
+}
+
+
+int main() {
+  // TODO
+}
+

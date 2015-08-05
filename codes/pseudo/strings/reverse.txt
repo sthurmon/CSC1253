@@ -1,0 +1,8 @@
+To Reverse a String
+
+Begin at the end,
+End at the beginning,
+And step in steps of one:
+  Print each thing 
+  Inside the string,
+And thus the deed is done.

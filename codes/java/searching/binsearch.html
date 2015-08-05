@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>BinarySearchETC.java</title>
+<link rel="stylesheet" type="text/css" href="highlight.css">
+</head>
+<body class="hl">
+<pre class="hl"><span class="hl kwa">import</span> java<span class="hl opt">.</span>util<span class="hl opt">.</span>Arrays<span class="hl opt">;</span>
+
+<span class="hl kwa">class</span> ReturnInfo <span class="hl opt">{</span>
+  <span class="hl kwb">int</span> maxItemInfo<span class="hl opt">,</span> numComparisons<span class="hl opt">;</span>
+<span class="hl opt">}</span>
+
+<span class="hl kwa">public class</span> BinarySearchETC <span class="hl opt">{</span>
+
+  <span class="hl kwb">int</span> recDepth<span class="hl opt">,</span> latestCallNum<span class="hl opt">;</span>
+  <span class="hl kwb">int</span><span class="hl opt">[]</span> nums<span class="hl opt">;</span>
+
+<span class="hl com">/**</span>
+<span class="hl com"> * 1.)</span>
+<span class="hl com"> */</span>
+  <span class="hl kwd">BinarySearchETC</span><span class="hl opt">(</span><span class="hl kwb">int</span><span class="hl opt">[]</span> nums<span class="hl opt">) {</span>
+    <span class="hl kwa">this</span><span class="hl opt">.</span>nums <span class="hl opt">=</span> Arrays<span class="hl opt">.</span><span class="hl kwd">copyOf</span><span class="hl opt">(</span>nums<span class="hl opt">,</span> nums<span class="hl opt">.</span>length<span class="hl opt">);</span>
+    recDepth <span class="hl opt">=</span> latestCallNum <span class="hl opt">= -</span><span class="hl num">1</span><span class="hl opt">;</span>
+  <span class="hl opt">}</span>
+
+
+<span class="hl com">/**</span>
+<span class="hl com"> * Auxiliary functions; it is *much* easier to refactor these.</span>
+<span class="hl com"> */</span>
+  <span class="hl kwa">public</span> <span class="hl kwb">void</span> <span class="hl kwd">printStart</span><span class="hl opt">(</span><span class="hl kwb">int</span> myCallNum<span class="hl opt">,</span> <span class="hl kwb">int</span> left<span class="hl opt">,</span> <span class="hl kwb">int</span> right<span class="hl opt">) {</span>
+    System<span class="hl opt">.</span>out<span class="hl opt">.</span><span class="hl kwd">println</span><span class="hl opt">(</span><span class="hl str">&quot;start: myCallNum=&quot;</span><span class="hl opt">+</span>myCallNum<span class="hl opt">+</span>
+     <span class="hl str">&quot; nums[&quot;</span><span class="hl opt">+</span>left<span class="hl opt">+</span><span class="hl str">&quot;..&quot;</span><span class="hl opt">+</span>right<span class="hl opt">+</span><span class="hl str">&quot;]=&quot;</span>
+     <span class="hl opt">+</span>Arrays<span class="hl opt">.</span><span class="hl kwd">toString</span><span class="hl opt">(</span>Arrays<span class="hl opt">.</span><span class="hl kwd">copyOfRange</span><span class="hl opt">(</span>nums<span class="hl opt">,</span>left<span class="hl opt">,</span>right<span class="hl opt">+</span><span class="hl num">1</span><span class="hl opt">)));</span>
+  <span class="hl opt">}</span>
+
+  <span class="hl kwa">public</span> <span class="hl kwb">void</span> <span class="hl kwd">printEnd</span><span class="hl opt">(</span><span class="hl kwb">int</span> myCallNum<span class="hl opt">,</span> <span class="hl kwb">int</span> recDepth<span class="hl opt">,</span> <span class="hl kwb">int</span> left<span class="hl opt">,</span> <span class="hl kwb">int</span> right<span class="hl opt">,</span> <span class="hl kwb">int</span> mii<span class="hl opt">) {</span>
+    System<span class="hl opt">.</span>out<span class="hl opt">.</span><span class="hl kwd">println</span><span class="hl opt">(</span><span class="hl str">&quot;  end: myCallNum=&quot;</span><span class="hl opt">+</span>myCallNum<span class="hl opt">+</span>
+    <span class="hl str">&quot; (callsGenerated=&quot;</span><span class="hl opt">+(</span>latestCallNum<span class="hl opt">-</span>myCallNum<span class="hl opt">)+</span><span class="hl str">&quot;)&quot;</span><span class="hl opt">+</span><span class="hl str">&quot;, recDepth=&quot;</span><span class="hl opt">+(</span>recDepth<span class="hl opt">+</span><span class="hl num">1</span><span class="hl opt">)+</span><span class="hl str">&quot;, maxItemIndex=&quot;</span><span class="hl opt">+</span>mii<span class="hl opt">);</span>
+  <span class="hl opt">}</span>
+
+
+<span class="hl com">/**</span>
+<span class="hl com"> * 2.)</span>
+<span class="hl com"> */</span>
+  <span class="hl kwa">public</span> <span class="hl kwb">int</span> <span class="hl kwd">maxItemIndex</span><span class="hl opt">(</span><span class="hl kwb">int</span> left<span class="hl opt">,</span> <span class="hl kwb">int</span> right<span class="hl opt">) {</span>
+    <span class="hl kwb">int</span> myCallNum <span class="hl opt">= ++</span>latestCallNum<span class="hl opt">;</span>
+    <span class="hl kwd">printStart</span><span class="hl opt">(</span>myCallNum<span class="hl opt">,</span> left<span class="hl opt">,</span> right<span class="hl opt">);</span>
+    <span class="hl kwa">if</span> <span class="hl opt">(</span>left  <span class="hl opt">==</span> right<span class="hl opt">) {</span> 
+      <span class="hl kwd">printEnd</span><span class="hl opt">(</span>myCallNum<span class="hl opt">,</span> recDepth<span class="hl opt">,</span> left<span class="hl opt">,</span> right<span class="hl opt">,</span> left<span class="hl opt">);</span>
+      <span class="hl kwa">return</span> left<span class="hl opt">;</span>
+    <span class="hl opt">}</span>
+    <span class="hl kwa">else if</span> <span class="hl opt">(</span>left<span class="hl opt">+</span><span class="hl num">1</span> <span class="hl opt">==</span> right<span class="hl opt">) {</span>
+      <span class="hl kwa">if</span>   <span class="hl opt">(</span>nums<span class="hl opt">[</span>left<span class="hl opt">] &gt;=</span> nums<span class="hl opt">[</span>right<span class="hl opt">]) {</span> 
+        <span class="hl kwd">printEnd</span><span class="hl opt">(</span>myCallNum<span class="hl opt">,</span> recDepth<span class="hl opt">,</span> left<span class="hl opt">,</span> right<span class="hl opt">,</span> left<span class="hl opt">);</span>
+        <span class="hl kwa">return</span> left<span class="hl opt">;</span>
+      <span class="hl opt">}</span>
+      <span class="hl kwa">else</span> <span class="hl opt">{</span> 
+        <span class="hl kwd">printEnd</span><span class="hl opt">(</span>myCallNum<span class="hl opt">,</span> recDepth<span class="hl opt">,</span> left<span class="hl opt">,</span> right<span class="hl opt">,</span> right<span class="hl opt">);</span>
+        <span class="hl kwa">return</span> right<span class="hl opt">;</span>
+      <span class="hl opt">}</span>
+    <span class="hl opt">}</span>
+    <span class="hl kwb">int</span>  mid <span class="hl opt">= (</span>left <span class="hl opt">+</span> right<span class="hl opt">)/</span><span class="hl num">2</span><span class="hl opt">;</span>
+    recDepth<span class="hl opt">++;</span>
+    <span class="hl kwb">int</span>  leftMaxItemIndex <span class="hl opt">=</span> <span class="hl kwd">maxItemIndex</span><span class="hl opt">(</span>left<span class="hl opt">,</span>  mid<span class="hl opt">);</span>
+    <span class="hl kwb">int</span> rightMaxItemIndex <span class="hl opt">=</span> <span class="hl kwd">maxItemIndex</span><span class="hl opt">(</span>mid<span class="hl opt">+</span><span class="hl num">1</span><span class="hl opt">,</span> right<span class="hl opt">);</span>
+    recDepth<span class="hl opt">--;</span>
+    <span class="hl kwa">if</span> <span class="hl opt">(</span>nums<span class="hl opt">[</span>leftMaxItemIndex<span class="hl opt">] &gt;=</span> nums<span class="hl opt">[</span>rightMaxItemIndex<span class="hl opt">]) {</span>
+       <span class="hl kwd">printEnd</span><span class="hl opt">(</span>myCallNum<span class="hl opt">,</span> recDepth<span class="hl opt">,</span> left<span class="hl opt">,</span> right<span class="hl opt">,</span> leftMaxItemIndex<span class="hl opt">);</span>
+       <span class="hl kwa">return</span> leftMaxItemIndex<span class="hl opt">;</span>
+    <span class="hl opt">}</span>
+    <span class="hl kwd">printEnd</span><span class="hl opt">(</span>myCallNum<span class="hl opt">,</span> recDepth<span class="hl opt">,</span> left<span class="hl opt">,</span> right<span class="hl opt">,</span> rightMaxItemIndex<span class="hl opt">);</span>
+    <span class="hl kwa">return</span> rightMaxItemIndex<span class="hl opt">;</span>
+  <span class="hl opt">}</span>
+
+
+<span class="hl com">/**</span>
+<span class="hl com"> * 3.)</span>
+<span class="hl com"> */</span>
+  <span class="hl kwb">int</span> <span class="hl kwd">binarySearch</span><span class="hl opt">(</span><span class="hl kwb">int</span> left<span class="hl opt">,</span> <span class="hl kwb">int</span> right<span class="hl opt">,</span> <span class="hl kwb">int</span> key<span class="hl opt">) {</span>
+    System<span class="hl opt">.</span>out<span class="hl opt">.</span><span class="hl kwd">println</span><span class="hl opt">(</span><span class="hl str">&quot;binarySearch(&quot;</span><span class="hl opt">+</span>left<span class="hl opt">+</span><span class="hl str">&quot;, &quot;</span><span class="hl opt">+</span>right<span class="hl opt">+</span><span class="hl str">&quot;, &quot;</span><span class="hl opt">+</span>key<span class="hl opt">+</span><span class="hl str">&quot;):&quot;</span><span class="hl opt">+</span>
+      <span class="hl str">&quot; nums[&quot;</span><span class="hl opt">+</span>left<span class="hl opt">+</span><span class="hl str">&quot;..&quot;</span><span class="hl opt">+</span>right<span class="hl opt">+</span><span class="hl str">&quot;] = &quot;</span>
+      <span class="hl opt">+</span>Arrays<span class="hl opt">.</span><span class="hl kwd">toString</span><span class="hl opt">(</span>Arrays<span class="hl opt">.</span><span class="hl kwd">copyOfRange</span><span class="hl opt">(</span>nums<span class="hl opt">,</span> left<span class="hl opt">,</span> right<span class="hl opt">+</span><span class="hl num">1</span><span class="hl opt">)));</span>
+    <span class="hl kwb">int</span> returnVal <span class="hl opt">= -</span><span class="hl num">1</span><span class="hl opt">;</span>
+    <span class="hl kwa">if</span> <span class="hl opt">(</span>left <span class="hl opt">==</span> right<span class="hl opt">) {</span>
+      <span class="hl kwa">if</span> <span class="hl opt">(</span>nums<span class="hl opt">[</span>left<span class="hl opt">] ==</span> key<span class="hl opt">)</span> 
+        returnVal <span class="hl opt">=</span> left<span class="hl opt">;</span>
+    <span class="hl opt">}</span> <span class="hl kwa">else if</span> <span class="hl opt">(</span>left<span class="hl opt">+</span><span class="hl num">1</span> <span class="hl opt">==</span> right<span class="hl opt">) {</span>
+      <span class="hl kwa">if</span> <span class="hl opt">(</span>nums<span class="hl opt">[</span>left<span class="hl opt">] ==</span> key<span class="hl opt">)</span> 
+        returnVal <span class="hl opt">=</span> left<span class="hl opt">;</span>
+      <span class="hl kwa">else if</span> <span class="hl opt">(</span>nums<span class="hl opt">[</span>right<span class="hl opt">] ==</span> key<span class="hl opt">)</span> 
+        returnVal <span class="hl opt">=</span> right<span class="hl opt">;</span>
+    <span class="hl opt">}</span> <span class="hl kwa">else</span> <span class="hl opt">{</span>
+      <span class="hl kwb">int</span>  mid <span class="hl opt">= (</span>left <span class="hl opt">+</span> right<span class="hl opt">)/</span><span class="hl num">2</span><span class="hl opt">;</span>
+      <span class="hl kwa">if</span> <span class="hl opt">(</span>key <span class="hl opt">&lt;</span> nums<span class="hl opt">[</span>mid<span class="hl opt">]) {</span>
+        returnVal <span class="hl opt">=</span> <span class="hl kwd">binarySearch</span><span class="hl opt">(</span>left<span class="hl opt">,</span>  mid<span class="hl opt">-</span><span class="hl num">1</span><span class="hl opt">,</span> key<span class="hl opt">);</span>
+      <span class="hl opt">}</span> <span class="hl kwa">else if</span> <span class="hl opt">(</span>key <span class="hl opt">&gt;</span> nums<span class="hl opt">[</span>mid<span class="hl opt">]) {</span>
+        returnVal <span class="hl opt">=</span> <span class="hl kwd">binarySearch</span><span class="hl opt">(</span>mid<span class="hl opt">+</span><span class="hl num">1</span><span class="hl opt">,</span> right<span class="hl opt">,</span> key<span class="hl opt">);</span>
+      <span class="hl opt">}</span>
+    <span class="hl opt">}</span>
+    <span class="hl kwa">return</span> returnVal<span class="hl opt">;</span>
+  <span class="hl opt">}</span>
+
+
+<span class="hl com">/**</span>
+<span class="hl com"> * Auxiliary function for bonus.</span>
+<span class="hl com"> */</span>
+  <span class="hl kwa">public</span> <span class="hl kwb">void</span> <span class="hl kwd">extendedPrintEnd</span><span class="hl opt">(</span><span class="hl kwb">int</span> myCallNum<span class="hl opt">,</span> <span class="hl kwb">int</span> recDepth<span class="hl opt">,</span> <span class="hl kwb">int</span> left<span class="hl opt">,</span> <span class="hl kwb">int</span> right<span class="hl opt">,</span> <span class="hl kwb">int</span> mii<span class="hl opt">,</span> <span class="hl kwb">int</span> nc<span class="hl opt">) {</span>
+    System<span class="hl opt">.</span>out<span class="hl opt">.</span><span class="hl kwd">println</span><span class="hl opt">(</span><span class="hl str">&quot;  end: myCallNum=&quot;</span><span class="hl opt">+</span>myCallNum<span class="hl opt">+</span>
+    <span class="hl str">&quot; (callsGenerated=&quot;</span><span class="hl opt">+(</span>latestCallNum<span class="hl opt">-</span>myCallNum<span class="hl opt">)+</span><span class="hl str">&quot;)&quot;</span><span class="hl opt">+</span><span class="hl str">&quot;, recDepth=&quot;</span><span class="hl opt">+(</span>recDepth<span class="hl opt">+</span><span class="hl num">1</span><span class="hl opt">)+</span><span class="hl str">&quot;, maxItemIndex=&quot;</span><span class="hl opt">+</span>mii<span class="hl opt">+</span><span class="hl str">&quot;, numComparisons=&quot;</span><span class="hl opt">+</span>nc<span class="hl opt">);</span>
+  <span class="hl opt">}</span>
+
+
+<span class="hl com">/**</span>
+<span class="hl com"> * Bonus.</span>
+<span class="hl com"> */</span>
+  <span class="hl kwa">public</span> ReturnInfo <span class="hl kwd">extendedMaxItemIndex</span><span class="hl opt">(</span><span class="hl kwb">int</span> left<span class="hl opt">,</span> <span class="hl kwb">int</span> right<span class="hl opt">) {</span>
+    ReturnInfo ri <span class="hl opt">=</span> <span class="hl kwa">new</span> <span class="hl kwd">ReturnInfo</span><span class="hl opt">();</span>
+    <span class="hl kwb">int</span> myCallNum <span class="hl opt">= ++</span>latestCallNum<span class="hl opt">;</span>
+    <span class="hl kwd">printStart</span><span class="hl opt">(</span>myCallNum<span class="hl opt">,</span> left<span class="hl opt">,</span> right<span class="hl opt">);</span>
+    <span class="hl kwa">if</span> <span class="hl opt">(</span>left  <span class="hl opt">==</span> right<span class="hl opt">) {</span> 
+      ri<span class="hl opt">.</span>maxItemInfo <span class="hl opt">=</span> left<span class="hl opt">;</span>
+      <span class="hl kwd">extendedPrintEnd</span><span class="hl opt">(</span>myCallNum<span class="hl opt">,</span> recDepth<span class="hl opt">,</span> left<span class="hl opt">,</span> right<span class="hl opt">,</span> left<span class="hl opt">,</span> ri<span class="hl opt">.</span>numComparisons<span class="hl opt">);</span>
+      <span class="hl kwa">return</span> ri<span class="hl opt">;</span>
+    <span class="hl opt">}</span>
+    <span class="hl kwa">else if</span> <span class="hl opt">(</span>left<span class="hl opt">+</span><span class="hl num">1</span> <span class="hl opt">==</span> right<span class="hl opt">) {</span>
+      ri<span class="hl opt">.</span>numComparisons<span class="hl opt">++;</span>
+      <span class="hl kwa">if</span>   <span class="hl opt">(</span>nums<span class="hl opt">[</span>left<span class="hl opt">] &gt;=</span> nums<span class="hl opt">[</span>right<span class="hl opt">]) {</span> 
+        ri<span class="hl opt">.</span>maxItemInfo <span class="hl opt">=</span> left<span class="hl opt">;</span>
+        <span class="hl kwd">extendedPrintEnd</span><span class="hl opt">(</span>myCallNum<span class="hl opt">,</span> recDepth<span class="hl opt">,</span> left<span class="hl opt">,</span> right<span class="hl opt">,</span> left<span class="hl opt">,</span> ri<span class="hl opt">.</span>numComparisons<span class="hl opt">);</span>
+      <span class="hl opt">}</span>
+      <span class="hl kwa">else</span> <span class="hl opt">{</span> 
+        ri<span class="hl opt">.</span>maxItemInfo <span class="hl opt">=</span> right<span class="hl opt">;</span>
+        <span class="hl kwd">extendedPrintEnd</span><span class="hl opt">(</span>myCallNum<span class="hl opt">,</span> recDepth<span class="hl opt">,</span> left<span class="hl opt">,</span> right<span class="hl opt">,</span> right<span class="hl opt">,</span> ri<span class="hl opt">.</span>numComparisons<span class="hl opt">);</span>
+      <span class="hl opt">}</span>
+      <span class="hl kwa">return</span> ri<span class="hl opt">;</span>
+    <span class="hl opt">}</span>
+    <span class="hl kwb">int</span> mid <span class="hl opt">= (</span>left <span class="hl opt">+</span> right<span class="hl opt">)/</span><span class="hl num">2</span><span class="hl opt">;</span>
+    recDepth<span class="hl opt">++;</span>
+    ReturnInfo  leftri <span class="hl opt">=</span> <span class="hl kwd">extendedMaxItemIndex</span><span class="hl opt">(</span>left<span class="hl opt">,</span>  mid<span class="hl opt">);</span>
+    ReturnInfo rightri <span class="hl opt">=</span> <span class="hl kwd">extendedMaxItemIndex</span><span class="hl opt">(</span>mid<span class="hl opt">+</span><span class="hl num">1</span><span class="hl opt">,</span> right<span class="hl opt">);</span>
+    recDepth<span class="hl opt">--;</span>
+    ri<span class="hl opt">.</span>numComparisons<span class="hl opt">++;</span>
+    <span class="hl kwa">if</span> <span class="hl opt">(</span>nums<span class="hl opt">[</span>leftri<span class="hl opt">.</span>maxItemInfo<span class="hl opt">] &gt;=</span> nums<span class="hl opt">[</span>rightri<span class="hl opt">.</span>maxItemInfo<span class="hl opt">]) {</span>
+       ri<span class="hl opt">.</span>maxItemInfo    <span class="hl opt">=</span> leftri<span class="hl opt">.</span>maxItemInfo<span class="hl opt">;</span>
+       ri<span class="hl opt">.</span>numComparisons <span class="hl opt">=</span> ri<span class="hl opt">.</span>numComparisons <span class="hl opt">+</span> leftri<span class="hl opt">.</span>numComparisons <span class="hl opt">+</span> rightri<span class="hl opt">.</span>numComparisons<span class="hl opt">;</span>
+       <span class="hl kwd">extendedPrintEnd</span><span class="hl opt">(</span>myCallNum<span class="hl opt">,</span> recDepth<span class="hl opt">,</span> left<span class="hl opt">,</span> right<span class="hl opt">,</span> leftri<span class="hl opt">.</span>maxItemInfo<span class="hl opt">,</span> ri<span class="hl opt">.</span>numComparisons<span class="hl opt">);</span>
+       <span class="hl kwa">return</span> ri<span class="hl opt">;</span>
+    <span class="hl opt">}</span>
+    ri<span class="hl opt">.</span>maxItemInfo    <span class="hl opt">=</span> rightri<span class="hl opt">.</span>maxItemInfo<span class="hl opt">;</span>
+    ri<span class="hl opt">.</span>numComparisons <span class="hl opt">=</span> ri<span class="hl opt">.</span>numComparisons <span class="hl opt">+</span> leftri<span class="hl opt">.</span>numComparisons <span class="hl opt">+</span> rightri<span class="hl opt">.</span>numComparisons<span class="hl opt">;</span>
+    <span class="hl kwd">extendedPrintEnd</span><span class="hl opt">(</span>myCallNum<span class="hl opt">,</span> recDepth<span class="hl opt">,</span> left<span class="hl opt">,</span> right<span class="hl opt">,</span> rightri<span class="hl opt">.</span>maxItemInfo<span class="hl opt">,</span> ri<span class="hl opt">.</span>numComparisons<span class="hl opt">);</span>
+    <span class="hl kwa">return</span> ri<span class="hl opt">;</span>
+  <span class="hl opt">}</span>
+
+
+  <span class="hl kwa">public static</span> <span class="hl kwb">void</span> <span class="hl kwd">main</span><span class="hl opt">(</span>String<span class="hl opt">[]</span> args<span class="hl opt">) {</span>
+    <span class="hl com">/*</span>
+<span class="hl com">    int[] nums = {-1,0,15,2,-3,14};</span>
+<span class="hl com">    BinarySearchETC  ibs  = new BinarySearchETC(nums);</span>
+<span class="hl com">     ibs.maxItemIndex(0,nums.length-1);</span>
+<span class="hl com">    System.out.println(&quot;-----&quot;);</span>
+<span class="hl com">    BinarySearchETC iibs = new BinarySearchETC(nums);</span>
+<span class="hl com">    iibs.maxItemIndex(1,nums.length-1);</span>
+<span class="hl com">    */</span>
+
+    <span class="hl com">/*</span>
+<span class="hl com">    int[] nums = {-3,2,8,13,23,27};</span>
+<span class="hl com">    BinarySearchETC  ibs  = new BinarySearchETC(nums);</span>
+<span class="hl com">    System.out.println(&quot;returnIndex = &quot;+ibs.binarySearch(0, nums.length-1, 11));</span>
+<span class="hl com">    */</span>
+
+    <span class="hl kwb">int</span><span class="hl opt">[]</span> nums <span class="hl opt">= {-</span><span class="hl num">1</span><span class="hl opt">,</span><span class="hl num">0</span><span class="hl opt">,</span><span class="hl num">15</span><span class="hl opt">,</span><span class="hl num">2</span><span class="hl opt">,-</span><span class="hl num">3</span><span class="hl opt">,</span><span class="hl num">14</span><span class="hl opt">};</span>
+    BinarySearchETC  ibs  <span class="hl opt">=</span> <span class="hl kwa">new</span> <span class="hl kwd">BinarySearchETC</span><span class="hl opt">(</span>nums<span class="hl opt">);</span>
+    ibs<span class="hl opt">.</span><span class="hl kwd">extendedMaxItemIndex</span><span class="hl opt">(</span><span class="hl num">0</span><span class="hl opt">,</span>nums<span class="hl opt">.</span>length<span class="hl opt">-</span><span class="hl num">1</span><span class="hl opt">);</span>
+  <span class="hl opt">}</span>
+
+
+<span class="hl opt">}</span>
+</pre>
+</body>
+</html>
+<!--HTML generated by highlight 3.9, http://www.andre-simon.de/-->

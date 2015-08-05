@@ -1,0 +1,9 @@
+bool find(int _) {
+ int _;
+ ifstream infile;
+ infile.open("nums.dat");
+ while (infile >> _)
+   if (_ == _)
+     return true;
+ return false;
+}

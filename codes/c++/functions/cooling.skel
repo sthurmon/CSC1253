@@ -1,0 +1,24 @@
+#include <iostream>
+#include <cmath>
+#include "unistd.h"
+using namespace std;
+
+float Ti, Te, k;
+
+float T(float t) {
+  ______ __ + (__ - __)*___(-_*_);
+}
+
+int main() {
+  float t;
+  ____ << "__> ";
+  ___  >>  __;
+  ____ << "__> ";
+  ___  >>  __;
+  ____ << " _> ";
+  ___  >>   _;
+  ___ (_=0; _<=10; _++) {
+    ____ << "  < " << _(_) << ____ << ___::_____;
+    _____(1);
+  }
+}

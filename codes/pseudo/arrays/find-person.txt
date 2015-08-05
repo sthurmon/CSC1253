@@ -1,0 +1,3 @@
+  Find the differences
+  Add the differences
+And finally, find the mininmum.

@@ -1,0 +1,4 @@
+1. Create the initial array permutation[] = [0, 1, 2, ..., (numItems-1)].
+2. Repeat steps (3)-(4) for i=numItems-1, numItems-2, ..., 1.
+3. Create a random integer m, 0 <= m <= i, using the seed.
+4. If i != m, exchange permutation[m] and permutation[i].

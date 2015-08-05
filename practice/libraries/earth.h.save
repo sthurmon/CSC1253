@@ -1,0 +1,11 @@
+#ifndef EARTH_H
+#define EARTH_H
+
+namespace earth{
+float g0=9.81;
+float r=6371000;
+float gh(float height);
+}
+
+#endif
+

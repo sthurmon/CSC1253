@@ -1,0 +1,2 @@
+For each number in the list,
+Find the next minimum and switch.

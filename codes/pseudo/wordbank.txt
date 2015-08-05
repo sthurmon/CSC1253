@@ -1,0 +1,43 @@
+symbols:
+  <-
+  =,<,>,<=,>=
+  +,-,*,/,%
+  a,b,c,...
+
+words:
+  all
+  be
+  call
+  do
+  each
+  element
+  false
+  for
+  if
+  in
+  is
+  let
+  of
+  otherwise
+  range
+  return
+  sequence
+  set
+  steps
+  then
+  to
+  true
+  until
+  where
+  while
+
+functions:
+  argmax
+  argmin
+  exit
+  max
+  median
+  min
+  print
+  sort
+  swap

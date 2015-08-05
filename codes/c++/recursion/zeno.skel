@@ -1,0 +1,12 @@
+#include <iostream>
+using namespace std;
+
+float zeno(float n) {
+  __ (_ >.99) ______ 1;
+  ____ << "< " << _ << ____;
+  ____(_+(_-_)/_);
+}
+
+int main() {
+  ____(0);
+}

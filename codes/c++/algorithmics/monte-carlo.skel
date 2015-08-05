@@ -1,0 +1,16 @@
+#include <iostream>
+#include "stdlib.h"
+using namespace std;
+
+int main() {
+  float x, y;
+  int i, n=1000, inside=0;
+  _____(____(NULL));                 // seed RNG
+  ___ (_=0; _<_; _++) {              // loop i=0 to n=1000
+    _ = (____()%101)/100.0;          // get x-coordinate
+    _ = (____()%101)/100.0;          // get y-coordinate
+    __ (_*_ + _*_ < 1)               // check if in quartercircle
+      ______++;                      // increment # that falls inside
+  }
+  ____ << 4*______/1000.0 << ____;   // print estimate
+}

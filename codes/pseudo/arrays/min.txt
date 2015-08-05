@@ -1,0 +1,6 @@
+Given numbers in a list,
+Set the  min  to  first;
+For each number after that:
+  If  it is even smaller yet
+  Let to it  the min be  set.
+Then  at end the min you get.

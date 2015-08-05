@@ -1,0 +1,8 @@
+file_io/amino-acids.cpp
+file_io/colorpillar.cpp
+file_io/copycat.cpp
+file_io/dictionary.cpp
+file_io/grapher.cpp
+file_io/ionic-reaction.cpp
+file_io/morse.cpp
+file_io/neo-ffi.cpp

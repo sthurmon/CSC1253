@@ -1,0 +1,11 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+  int n=9, s=0;
+  int a[n];
+  ____ << "> ";                      // input prompt
+  ___ (_=0; _<_; _++) ___ >> _[_];   // read in integers
+  ___ (_=0; _<_; _++) _   += _[_];   // sum integers
+  ____ << "< " << _ << ____;         // output sum
+}

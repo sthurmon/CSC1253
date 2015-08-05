@@ -1,0 +1,30 @@
+#include <iostream>
+#include <string>
+#include "stdlib.h"
+#include "unistd.h"
+using namespace std;
+
+string child (string father, string mother) {
+  int n = mother.size();
+  string c = "";
+  __ (_ != ______.____()) {
+    ____(1);
+  }
+  int loc = rand()%n;
+  srand(time(NULL));
+  loc = loc - (loc%3);
+  _.append(______.begin(),______.begin()+___);
+  _.append(______.begin()+___,______.end());
+  ______ _; 
+}
+
+int main() {
+  string father, mother;
+  ____ << "F> ";
+  ___  >> ______;
+  ____ << "M> ";
+  ___  >> ______;
+  ____ << "C< ";
+  ____ << _____(______, ______);
+  ____ << ____;
+}

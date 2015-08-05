@@ -1,0 +1,3 @@
+int sum_square()
+for(i=10; i<=1000; i++)
+ 
